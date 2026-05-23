@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About — Civica News</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,400&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="articles/article.css">
+  <style>
+    .about-wrap { max-width: 1200px; margin: 0 auto; padding: 32px 24px 64px; }
+    .about-header { max-width: 780px; margin: 0 auto 28px; border-bottom: 3px solid var(--ink); padding-bottom: 16px; }
+    .about-label { font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.16em; color: var(--crimson); margin-bottom: 8px; }
+    .about-h1 { font-family: var(--serif); font-size: 2.5rem; font-weight: 700; letter-spacing: -0.01em; }
+    .about-body { max-width: 780px; margin: 0 auto; font-size: 1.0625rem; line-height: 1.85; }
+    .about-body p { margin-bottom: 1.4em; }
+    .about-body h2 { font-family: var(--serif); font-size: 1.45rem; font-weight: 700; margin: 2rem 0 0.75rem; }
+    .about-body ul { margin: 1em 0 1.4em 1.5em; }
+    .about-body li { margin-bottom: 0.6em; }
+    .about-body strong { font-weight: 700; }
+  </style>
+</head>
+<body>
+<div class="topbar">
+  <span class="topbar-pub">Civica News · Costa Blanca Independent Press</span>
+  <div class="topbar-links">
+    <a href="index.html">Home</a><span class="sep">|</span>
+    <a href="articles/">Archive</a>
+  </div>
+</div>
+<header class="masthead">
+  <div class="date-strip">
+    <div class="dateline" id="today"></div>
+    <div class="dateline right">Costa Blanca · Independent Press</div>
+  </div>
+  <div class="logo-row">
+    <a href="index.html" class="logo"><span class="c">C</span>ivica</a>
+    <div class="logo-sub">
+      <div class="logo-sub-name">Civica Trust Group</div>
+      <div class="logo-sub-tag"><em>Independent journalism for those who care</em></div>
+    </div>
+  </div>
+  <div class="double-rule"></div>
+  <nav class="main-nav">
+    <a href="index.html">Front Page</a>
+    <a href="#">Politics</a><a href="#">Economy</a><a href="#">Culture</a>
+    <a href="#">Labour</a><a href="#">International</a><a href="#">Review</a><a href="#">Special</a>
+  </nav>
+</header>
+
+<div class="about-wrap">
+  <div class="about-header">
+    <p class="about-label">About</p>
+    <h1 class="about-h1">About Civica News</h1>
+  </div>
+  <div class="about-body">
+    <p><strong>Civica News</strong> is an independent left-wing publication based in Costa Blanca. We serve intellectuals, students, and organised labour — those who seek honest, rigorous journalism unconstrained by commercial pressures.</p>
+    <p>The publication is privately owned and funded through interest generated from the assets of the <strong>Civica Trust Group</strong>, ensuring full editorial independence.</p>
+    <h2>Our Editions</h2>
+    <ul>
+      <li><strong>Civica Live</strong> — Live television format content posted on our platforms.</li>
+      <li><strong>Civica Now</strong> — Live, brief headlines available on our independent platforms.</li>
+      <li><strong>Civica Review</strong> — In-depth reviews into a specific subject.</li>
+      <li><strong>Civica Standard</strong> — Regular articles about topics in the headlines.</li>
+      <li><strong>Civica Special</strong> — Tabloid style articles available on our platforms and Civica Live Special.</li>
+    </ul>
+    <h2>Editorial Independence</h2>
+    <p>Civica operates without advertising revenue, political party funding, or corporate ownership. Our editorial decisions are made entirely by our staff and guided by our commitment to accuracy, rigour, and the public interest.</p>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-accent"></div>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-logo"><span>C</span>ivica</div>
+      <p>Independent journalism for Costa Blanca — funded through the Civica Trust Group.</p>
+    </div>
+    <div class="footer-col"><p class="footer-heading">Sections</p><a href="#">Politics</a><a href="#">Economy</a><a href="#">Culture</a><a href="#">Labour</a><a href="#">International</a></div>
+    <div class="footer-col"><p class="footer-heading">Editions</p><a href="#">Civica Standard</a><a href="#">Civica Review</a><a href="#">Civica Special</a><a href="#">Civica Now</a></div>
+    <div class="footer-col"><p class="footer-heading">Publication</p><a href="about.html">About Civica</a><a href="articles/">Archive</a></div>
+  </div>
+  <div class="footer-bottom"><span>© 2026 Civica Trust Group.</span><span>Costa Blanca Independent Press</span></div>
+</footer>
+<script>
+  document.getElementById('today').textContent = new Date().toLocaleDateString('en-GB', {weekday:'long',day:'numeric',month:'long',year:'numeric'});
+</script>
+</body>
+</html>

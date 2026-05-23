@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Civica News</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,400&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --crimson: #8B1A1A;
+      --crimson-light: #e05555;
+      --ink: #0f0f0f;
+      --ink-2: #3a3a3a;
+      --ink-3: #707070;
+      --ink-4: #aaaaaa;
+      --paper: #f9f8f5;
+      --paper-warm: #f1efe9;
+      --rule: #dedad2;
+      --sans: 'Lato', sans-serif;
+      --serif: 'Playfair Display', Georgia, serif;
+      --max: 1200px;
+    }
+
+    html { -webkit-font-smoothing: antialiased; }
+    body { font-family: var(--sans); background: var(--paper); color: var(--ink); line-height: 1.5; }
+    a { text-decoration: none; color: inherit; }
+
+    /* ── LOADING ── */
+    #loading {
+      position: fixed; inset: 0; background: var(--paper);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 999; transition: opacity 0.4s;
+    }
+    #loading .load-logo { font-family: var(--sans); font-size: 2.5rem; font-weight: 300; color: var(--ink); }
+    #loading .load-logo span { font-weight: 900; color: var(--crimson); }
+    #loading.hidden { opacity: 0; pointer-events: none; }
+
+    /* ── TOPBAR ── */
+    .topbar {
+      background: var(--crimson); color: rgba(255,255,255,0.8);
+      font-size: 0.6rem; letter-spacing: 0.08em;
+      padding: 6px 24px; display: flex; align-items: center;
+      justify-content: space-between; gap: 16px; overflow: hidden;
+    }
+    .ticker-wrap { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; overflow: hidden; }
+    .ticker-label { font-weight: 900; letter-spacing: 0.16em; color: rgba(255,255,255,0.4); font-size: 0.55rem; white-space: nowrap; flex-shrink: 0; }
+    .ticker-outer { overflow: hidden; flex: 1; min-width: 0; }
+    .ticker-track { display: flex; white-space: nowrap; animation: ticker 32s linear infinite; }
+    .ticker-track span { color: rgba(255,255,255,0.75); padding-right: 56px; }
+    .ticker-track:hover { animation-play-state: paused; }
+    @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    .topbar-links { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+    .topbar-links a { color: rgba(255,255,255,0.55); font-weight: 700; font-size: 0.55rem; letter-spacing: 0.14em; text-transform: uppercase; transition: color 0.15s; }
+    .topbar-links a:hover { color: #fff; }
+    .sep { color: rgba(255,255,255,0.2); }
+
+    /* ── MASTHEAD ── */
+    .masthead { background: var(--paper); }
+    .date-strip { display: flex; justify-content: space-between; padding: 6px 32px; border-bottom: 1px solid var(--rule); }
+    .dateline { font-size: 0.62rem; color: var(--ink-4); text-transform: uppercase; letter-spacing: 0.12em; }
+    .logo-row { display: flex; align-items: center; justify-content: space-between; padding: 22px 32px 18px; }
+    .logo { font-family: var(--sans); font-weight: 300; font-size: 2.6rem; letter-spacing: -0.02em; color: var(--ink); line-height: 1; }
+    .logo .c { font-weight: 900; color: var(--crimson); }
+    .logo-sub { text-align: right; }
+    .logo-sub-name { font-size: 0.62rem; color: var(--ink-4); text-transform: uppercase; letter-spacing: 0.14em; font-weight: 700; }
+    .logo-sub-tag { font-size: 0.62rem; color: var(--ink-4); margin-top: 2px; font-style: italic; }
+    .double-rule { border-top: 3px solid var(--ink); border-bottom: 1px solid var(--ink); height: 5px; }
+    .main-nav { background: var(--ink); display: flex; overflow-x: auto; padding: 0 16px; scrollbar-width: none; }
+    .main-nav::-webkit-scrollbar { display: none; }
+    .main-nav a { color: rgba(255,255,255,0.65); font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; padding: 12px 14px; white-space: nowrap; border-bottom: 2px solid transparent; transition: color 0.15s, border-color 0.15s; }
+    .main-nav a:hover, .main-nav a.active { color: #fff; border-bottom-color: var(--crimson-light); }
+
+    /* ── LAYOUT ── */
+    .site-wrap { max-width: var(--max); margin: 0 auto; padding: 24px 24px 48px; }
+
+    /* ── BADGES & CATS ── */
+    .badge { font-size: 0.56rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; padding: 2px 6px; border: 1px solid currentColor; }
+    .badge-Standard { color: var(--crimson); }
+    .badge-Now, .badge-Live { background: var(--crimson); color: #fff; border-color: var(--crimson); }
+    .badge-Review { color: var(--ink-2); border-color: var(--ink-2); }
+    .badge-Special { color: var(--crimson); }
+    .cat { font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: var(--crimson); }
+    .meta-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+
+    /* ── HEADLINES ── */
+    .hl { font-family: var(--serif); color: var(--ink); transition: color 0.15s; line-height: 1.12; }
+    .hl-hero { font-size: 2.4rem; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 12px; }
+    .hl-large { font-size: 1.15rem; font-weight: 700; margin-bottom: 8px; }
+    .hl-medium { font-size: 1rem; font-weight: 700; margin-bottom: 4px; }
+    .hl-small { font-size: 0.88rem; font-weight: 700; margin: 3px 0 4px; }
+    .deck { color: var(--ink-2); line-height: 1.6; margin-bottom: 10px; }
+    .deck-lg { font-size: 1rem; }
+    .deck-sm { font-size: 0.875rem; }
+    .byline { font-size: 0.7rem; color: var(--ink-3); }
+    .byline strong { color: var(--ink-2); }
+
+    .art-link { display: block; }
+    .art-link:hover .hl { color: var(--crimson); }
+
+    /* ── HERO GRID ── */
+    .hero-grid { display: grid; grid-template-columns: 1fr; border: 1px solid var(--rule); }
+    @media (min-width: 860px) { .hero-grid { grid-template-columns: 8fr 4fr; } }
+    .hero-main { padding: 24px 28px; border-bottom: 1px solid var(--rule); }
+    @media (min-width: 860px) { .hero-main { border-bottom: none; border-right: 1px solid var(--rule); } }
+    .hero-top-rule { border-top: 3px solid var(--ink); padding-top: 14px; }
+    .hero-img { width: 100%; aspect-ratio: 16/9; object-fit: cover; margin-bottom: 16px; background: var(--paper-warm); display: block; }
+    .hero-img-placeholder { width: 100%; aspect-ratio: 16/9; background: var(--paper-warm); margin-bottom: 16px; }
+
+    .hero-side { display: flex; flex-direction: column; }
+    .also-today { font-size: 0.56rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-4); padding: 14px 20px 6px; }
+    .side-card { padding: 14px 20px; border-top: 1px solid var(--rule); }
+
+    /* ── THREE-COL STRIP ── */
+    .strip { display: grid; grid-template-columns: 1fr; border: 1px solid var(--rule); border-top: none; }
+    @media (min-width: 640px) { .strip { grid-template-columns: repeat(3, 1fr); } }
+    .strip-card { padding: 20px; border-top: 1px solid var(--rule); }
+    @media (min-width: 640px) { .strip-card { border-top: none; border-right: 1px solid var(--rule); } }
+    .strip-card:last-child { border-right: none; }
+    .strip-top-rule { border-top: 3px solid var(--ink); padding-top: 12px; margin-bottom: 0; }
+    .strip-img { width: 100%; aspect-ratio: 4/3; object-fit: cover; margin-bottom: 10px; background: var(--paper-warm); display: block; }
+    .strip-img-placeholder { width: 100%; aspect-ratio: 4/3; background: var(--paper-warm); margin-bottom: 10px; }
+
+    /* ── LOWER GRID ── */
+    .lower { display: grid; grid-template-columns: 1fr; gap: 32px; margin-top: 28px; }
+    @media (min-width: 860px) { .lower { grid-template-columns: 8fr 4fr; } }
+
+    /* ── SECTION LABEL ── */
+    .sec-label { font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: var(--crimson); border-bottom: 2px solid var(--ink); padding-bottom: 8px; margin-bottom: 14px; }
+
+    /* ── MEDIUM CARDS ── */
+    .medium-card { display: flex; gap: 14px; border-top: 1px solid var(--rule); padding: 14px 0; }
+    .medium-card:first-child { border-top: none; padding-top: 0; }
+    .medium-thumb { flex-shrink: 0; width: 96px; height: 76px; object-fit: cover; background: var(--paper-warm); display: block; }
+    .medium-text { flex: 1; min-width: 0; }
+
+    /* ── SMALL CARDS (sidebar) ── */
+    .small-card { display: block; border-top: 1px solid var(--rule); padding: 10px 0; }
+
+    /* ── SIDEBAR SECTIONS ── */
+    .sec-nav { display: flex; flex-direction: column; margin-bottom: 28px; }
+    .sec-nav a { display: flex; justify-content: space-between; padding: 9px 0; border-bottom: 1px solid var(--rule); font-size: 0.875rem; font-weight: 500; transition: color 0.15s; }
+    .sec-nav a:hover { color: var(--crimson); }
+    .sec-nav span { color: var(--ink-4); font-size: 0.72rem; }
+
+    /* ── FOOTER ── */
+    .site-footer { background: var(--ink); color: rgba(255,255,255,0.5); font-size: 0.8rem; margin-top: 48px; }
+    .footer-accent { height: 4px; background: var(--crimson); }
+    .footer-inner { max-width: var(--max); margin: 0 auto; padding: 44px 24px; display: grid; grid-template-columns: 1fr; gap: 28px; }
+    @media (min-width: 640px) { .footer-inner { grid-template-columns: 2fr 1fr 1fr 1fr; } }
+    .footer-logo { font-family: var(--sans); font-weight: 300; font-size: 2rem; color: #fff; letter-spacing: -0.01em; margin-bottom: 10px; }
+    .footer-logo span { font-weight: 900; color: var(--crimson-light); }
+    .footer-brand p { line-height: 1.6; color: rgba(255,255,255,0.38); font-size: 0.73rem; margin-bottom: 12px; }
+    .footer-about { font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: #e05555; }
+    .footer-about:hover { color: #f08080; }
+    .footer-heading { font-size: 0.56rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.16em; color: rgba(255,255,255,0.25); margin-bottom: 12px; }
+    .footer-col { display: flex; flex-direction: column; gap: 9px; }
+    .footer-col a { color: rgba(255,255,255,0.5); transition: color 0.15s; }
+    .footer-col a:hover { color: #fff; }
+    .footer-bottom { max-width: var(--max); margin: 0 auto; padding: 14px 24px; border-top: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; font-size: 0.62rem; color: rgba(255,255,255,0.22); }
+
+    /* ── EMPTY STATE ── */
+    .empty { text-align: center; padding: 80px 24px; }
+    .empty h2 { font-family: var(--serif); font-size: 2rem; margin-bottom: 12px; }
+    .empty p { color: var(--ink-3); }
+    .empty code { background: var(--paper-warm); padding: 2px 6px; border-radius: 3px; font-size: 0.875rem; }
+
+    @media (max-width: 600px) {
+      .logo { font-size: 2rem; }
+      .hl-hero { font-size: 1.75rem; }
+      .logo-sub, .dateline.right { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="loading"><div class="load-logo"><span>C</span>ivica</div></div>
+
+<!-- TOPBAR - headlines injected by JS -->
+<div class="topbar">
+  <div class="ticker-wrap">
+    <span class="ticker-label">LATEST</span>
+    <div class="ticker-outer">
+      <div class="ticker-track" id="ticker"></div>
+    </div>
+  </div>
+  <div class="topbar-links">
+    <a href="about.html">About</a>
+    <span class="sep">|</span>
+    <a href="articles/">Archive</a>
+  </div>
+</div>
+
+<!-- MASTHEAD -->
+<header class="masthead">
+  <div class="date-strip">
+    <div class="dateline" id="today-date"></div>
+    <div class="dateline right">Costa Blanca · Independent Press</div>
+  </div>
+  <div class="logo-row">
+    <a href="index.html" class="logo"><span class="c">C</span>ivica</a>
+    <div class="logo-sub">
+      <div class="logo-sub-name">Civica Trust Group</div>
+      <div class="logo-sub-tag"><em>Independent journalism for those who care</em></div>
+    </div>
+  </div>
+  <div class="double-rule"></div>
+  <nav class="main-nav" id="main-nav">
+    <a href="index.html" class="active">Front Page</a>
+    <a href="#" data-cat="Politics">Politics</a>
+    <a href="#" data-cat="Economy">Economy</a>
+    <a href="#" data-cat="Culture">Culture</a>
+    <a href="#" data-cat="Labour">Labour</a>
+    <a href="#" data-cat="International">International</a>
+    <a href="#" data-cat="Science">Science</a>
+    <a href="#" data-cat="Opinion">Opinion</a>
+    <a href="#" data-ed="Review">Review</a>
+    <a href="#" data-ed="Special">Special</a>
+  </nav>
+</header>
+
+<!-- FRONT PAGE — built by JS -->
+<main class="site-wrap" id="front-page"></main>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="footer-accent"></div>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-logo"><span>C</span>ivica</div>
+      <p>Civica News is an independent left-wing publication based in Costa Blanca, serving intellectuals, students, and organised labour. Funded through the Civica Trust Group.</p>
+      <a href="about.html" class="footer-about">About us →</a>
+    </div>
+    <div class="footer-col">
+      <p class="footer-heading">Sections</p>
+      <a href="#">Politics</a><a href="#">Economy</a><a href="#">Culture</a>
+      <a href="#">Labour</a><a href="#">International</a><a href="#">Science</a><a href="#">Opinion</a>
+    </div>
+    <div class="footer-col">
+      <p class="footer-heading">Editions</p>
+      <a href="#">Civica Standard</a><a href="#">Civica Review</a>
+      <a href="#">Civica Special</a><a href="#">Civica Now</a><a href="#">Civica Live</a>
+    </div>
+    <div class="footer-col">
+      <p class="footer-heading">Publication</p>
+      <a href="about.html">About Civica</a>
+      <a href="articles/">Article Archive</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© <span id="yr"></span> Civica Trust Group. All rights reserved.</span>
+    <span>Costa Blanca Independent Press</span>
+  </div>
+</footer>
+
+<script>
+(async () => {
+
+  // ── HELPERS ──────────────────────────────────────────────
+  const $ = id => document.getElementById(id);
+
+  function fmtDate(iso, opts) {
+    return new Date(iso + 'T12:00:00').toLocaleDateString('en-GB', opts || {
+      weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+    });
+  }
+
+  function fmtShort(iso) {
+    return new Date(iso + 'T12:00:00').toLocaleDateString('en-GB', {
+      day: 'numeric', month: 'long', year: 'numeric'
+    });
+  }
+
+  function badge(edition) {
+    return `<span class="badge badge-${edition}">${edition}</span>`;
+  }
+
+  function imgOrPlaceholder(article, cls) {
+    if (article.image) {
+      return `<img src="articles/${article.image}" alt="${article.imageAlt || article.title}" class="${cls}" loading="lazy" onerror="this.style.display='none'">`;
+    }
+    return `<div class="${cls.replace('img','img-placeholder')}"></div>`;
+  }
+
+  // ── DATE ─────────────────────────────────────────────────
+  $('today-date').textContent = fmtDate(new Date().toISOString().slice(0, 10));
+  $('yr').textContent = new Date().getFullYear();
+
+  // ── FETCH MANIFEST ───────────────────────────────────────
+  let articles = [];
+  try {
+    const res = await fetch('articles/manifest.json');
+    articles = await res.json();
+  } catch(e) {
+    $('front-page').innerHTML = `<div class="empty"><h2>No articles yet</h2><p>Add articles to <code>articles/manifest.json</code> to get started.</p></div>`;
+    $('loading').classList.add('hidden');
+    return;
+  }
+
+  // Sort by date descending
+  articles.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+  // ── TICKER ───────────────────────────────────────────────
+  // Top 8 most recent article titles, doubled for seamless loop
+  const tickerItems = articles.slice(0, 8);
+  const doubled = [...tickerItems, ...tickerItems];
+  $('ticker').innerHTML = doubled.map(a => `<span>${a.title}</span>`).join('');
+
+  // ── FRONT PAGE LAYOUT ────────────────────────────────────
+  // Hero: most recent with hero:true, fallback to most recent overall
+  const heroArticle = articles.find(a => a.hero) || articles[0];
+  const rest = articles.filter(a => a.slug !== heroArticle?.slug);
+
+  // Secondary: next 2 most recent (non-hero)
+  const secondary = rest.slice(0, 2);
+  // Strip: next 3 after secondary
+  const strip = rest.slice(2, 5);
+  // More stories: next 8 after strip
+  const moreStories = rest.slice(5, 13);
+  // Sidebar latest: top 6 overall (excluding hero)
+  const sidebarLatest = rest.slice(0, 6);
+
+  // Category counts
+  const catCounts = {};
+  articles.forEach(a => { catCounts[a.category] = (catCounts[a.category] || 0) + 1; });
+  const cats = Object.entries(catCounts).sort((a,b) => b[1]-a[1]);
+
+  // ── BUILD HTML ───────────────────────────────────────────
+  let html = '';
+
+  if (!heroArticle) {
+    html = `<div class="empty"><h2>No articles yet</h2><p>Add articles to <code>articles/manifest.json</code> to get started.</p></div>`;
+    $('front-page').innerHTML = html;
+    $('loading').classList.add('hidden');
+    return;
+  }
+
+  // HERO + SECONDARY
+  html += `<div class="hero-grid">`;
+
+  // Hero
+  html += `<div class="hero-main">
+    <a href="articles/${heroArticle.slug}.html" class="art-link hero-top-rule">
+      ${heroArticle.image
+        ? `<img src="articles/${heroArticle.image}" alt="${heroArticle.imageAlt || heroArticle.title}" class="hero-img" loading="eager" onerror="this.style.display='none'">`
+        : `<div class="hero-img-placeholder"></div>`}
+      <div class="meta-row">${badge(heroArticle.edition)}<span class="cat">${heroArticle.category}</span></div>
+      <h2 class="hl hl-hero">${heroArticle.title}</h2>
+      ${heroArticle.subtitle ? `<p class="deck deck-lg">${heroArticle.subtitle}</p>` : ''}
+      <p class="byline"><strong>${heroArticle.author}</strong> · ${fmtShort(heroArticle.date)}</p>
+    </a>
+  </div>`;
+
+  // Secondary
+  html += `<div class="hero-side"><p class="also-today">Also Today</p>`;
+  secondary.forEach(a => {
+    html += `<a href="articles/${a.slug}.html" class="art-link side-card">
+      <div class="meta-row">${badge(a.edition)}<span class="cat">${a.category}</span></div>
+      <h3 class="hl hl-large">${a.title}</h3>
+      ${a.subtitle ? `<p class="deck deck-sm">${a.subtitle}</p>` : ''}
+      <p class="byline">${a.author} · ${fmtShort(a.date)}</p>
+    </a>`;
+  });
+  html += `</div></div>`; // end hero-grid
+
+  // STRIP (3 cards)
+  if (strip.length > 0) {
+    html += `<div class="strip">`;
+    strip.forEach(a => {
+      html += `<div class="strip-card">
+        <a href="articles/${a.slug}.html" class="art-link strip-top-rule">
+          ${a.image
+            ? `<img src="articles/${a.image}" alt="${a.imageAlt || a.title}" class="strip-img" loading="lazy" onerror="this.style.display='none'">`
+            : `<div class="strip-img-placeholder"></div>`}
+          <div class="meta-row" style="margin-top:10px;">${badge(a.edition)}<span class="cat">${a.category}</span></div>
+          <h3 class="hl hl-large">${a.title}</h3>
+          ${a.subtitle ? `<p class="deck deck-sm">${a.subtitle}</p>` : ''}
+          <p class="byline">${a.author} · ${fmtShort(a.date)}</p>
+        </a>
+      </div>`;
+    });
+    html += `</div>`;
+  }
+
+  // LOWER: more stories + sidebar
+  html += `<div class="lower">`;
+
+  // More stories
+  html += `<div>`;
+  if (moreStories.length > 0) {
+    html += `<p class="sec-label">More Stories</p>`;
+    moreStories.forEach(a => {
+      html += `<a href="articles/${a.slug}.html" class="art-link medium-card">
+        ${a.image
+          ? `<img src="articles/${a.image}" alt="${a.imageAlt || a.title}" class="medium-thumb" loading="lazy" onerror="this.style.display='none'">`
+          : ''}
+        <div class="medium-text">
+          <span class="cat">${a.category}</span>
+          <h3 class="hl hl-medium">${a.title}</h3>
+          <p class="byline">${fmtShort(a.date)}</p>
+        </div>
+      </a>`;
+    });
+  }
+  html += `</div>`;
+
+  // Sidebar
+  html += `<div>`;
+
+  // Sections
+  if (cats.length > 0) {
+    html += `<p class="sec-label">Sections</p><div class="sec-nav">`;
+    cats.forEach(([cat, count]) => {
+      html += `<a href="#"><span>${cat}</span><span>${count}</span></a>`;
+    });
+    html += `</div>`;
+  }
+
+  // Latest headlines
+  if (sidebarLatest.length > 0) {
+    html += `<p class="sec-label">Latest Headlines</p>`;
+    sidebarLatest.forEach(a => {
+      html += `<a href="articles/${a.slug}.html" class="art-link small-card">
+        <span class="cat">${a.category}</span>
+        <h4 class="hl hl-small">${a.title}</h4>
+        <p class="byline">${fmtShort(a.date)}</p>
+      </a>`;
+    });
+  }
+
+  html += `</div></div>`; // end lower
+
+  $('front-page').innerHTML = html;
+  $('loading').classList.add('hidden');
+
+})();
+</script>
+</body>
+</html>
