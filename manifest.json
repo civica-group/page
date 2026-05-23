@@ -1,0 +1,41 @@
+[
+  {
+    "slug": "workers-council-zero-hours",
+    "title": "Workers' Council Demands End to Zero-Hours Contracts Across the Region",
+    "subtitle": "The Costa Blanca Labour Federation has given employers until the end of the month to respond to new collective bargaining demands.",
+    "author": "Civica Editorial Board",
+    "date": "2026-05-20",
+    "category": "Labour",
+    "edition": "Standard",
+    "hero": true,
+    "image": "images/workers-council.jpg",
+    "imageAlt": "Workers gathering outside the regional labour federation offices in Alicante",
+    "tags": ["labour", "workers rights", "zero hours", "costa blanca", "unions"]
+  },
+  {
+    "slug": "parliament-tenant-protections",
+    "title": "Regional Parliament Votes to Extend Tenant Protections",
+    "subtitle": "New legislation will cap rent increases at inflation for the next three years.",
+    "author": "Civica Now",
+    "date": "2026-05-22",
+    "category": "Politics",
+    "edition": "Now",
+    "hero": false,
+    "image": "",
+    "imageAlt": "",
+    "tags": ["housing", "rent", "parliament", "costa blanca"]
+  },
+  {
+    "slug": "review-limits-of-consensus",
+    "title": "Review: The Limits of Consensus — A New History of European Social Democracy",
+    "subtitle": "A meticulous but ultimately cautious account of social democracy's long retreat from structural ambition.",
+    "author": "Prof. Elena Vidal",
+    "date": "2026-05-18",
+    "category": "Culture",
+    "edition": "Review",
+    "hero": false,
+    "image": "",
+    "imageAlt": "",
+    "tags": ["books", "social democracy", "history", "europe", "review"]
+  }
+]
